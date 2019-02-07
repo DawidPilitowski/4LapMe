@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments::links">
+    <title>Szczegóły produktu</title>
+</head>
+
+
+<body>
+<div class="page">
+    <!-- Main Navbar-->
+    <header th:replace="fragments::header">
+    </header>
+
+    <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+        <nav th:replace="fragments::sidebar">
+        </nav>
+
+        <div class="content-inner">
+            <!-- Page Header-->
+            <header th:replace="fragments::secondary-header">
+            </header>
+            <!-- Breadcrumb-->
+            <div class="breadcrumb-holder container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                    <li class="breadcrumb-item active">O nas</li>
+                </ul>
+            </div>
+            <section>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header d-flex align-items-center">
+                                    <h3 class="h4">O nas</h3>
+                                </div>
+                                <div class="card-body row">
+                                    <div class="autor col-md-12" th:align="center">
+                                        <h5>Projekt:</h5>
+                                        <p><b>Serwis do adoptowania zwierząt, kupna i sprzedaży przez hodowców.</b>
+                                        <p><br><u>Funkcje: </u><br>
+
+                                            1.Dodawanie, edycja użytkownikó. <br>
+                                            2.Dodawanie, edycja, usuwanie zwierząt. <br>
+                                            3.Logowanie<br>
+                                            4.Możliwość dodawania do koszytka <br>
+
+
+                                        </p>
+                                        <h6>Wykorzystane technologie:</h6>
+                                        <p>Spring-boot, MySql, Bootstrapious template, thymeleaf, html+css, lombok,
+                                            Maven</p>
+                                        <h6>System kontroli wersji:</h6>
+                                        <p> Git(Bitbucket)</p><br><br>
+                                        <h6><u>Autorzy:</u></h6>
+                                        <p> Dawid Pilitowski<br>
+                                            Sebastian Wojnicz<br>
+                                            Bartosz Falkowski<br>
+                                            Elżbieta Andryk</p>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div th:replace="fragments::footer"></div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
+

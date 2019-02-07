@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments::links">
+</head>
+<body>
+
+<body>
+<div class="page login-page">
+    <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+            <div class="row">
+                <!-- Logo & Information Panel-->
+                <div class="col-lg-6">
+                    <div class="info d-flex align-items-center">
+                        <div class="content">
+                            <div class="logo">
+                                <h1>Logowanie</h1>
+                            </div>
+                            <p>Jeszcze tylko chwila...</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form Panel    -->
+                <div class="col-lg-6 bg-white">
+                    <div class="form d-flex align-items-center">
+                        <div class="content">
+                            <form th:action="@{/login}" action="/login" method="post">
+                                <div class="form-group">
+                                    <input id="username" type="text" name="username" required
+                                           data-msg="Please enter your username" class="input-material">
+                                    <label for="username" class="label-material">Login</label>
+                                </div>
+                                <div class="form-group">
+                                    <input id="password" type="password" name="password" required
+                                           data-msg="Please enter your password" class="input-material">
+                                    <label for="password" class="label-material">Hasło</label>
+                                </div>
+                                <!--/*@thymesVar id="error_message" type=""*/-->
+                                <div th:if="${error_message} != null" class="row">
+                                    <div class="col-md-offset-4 col-md-4">
+                                        <p class="error_message" th:text="${error_message}"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-offset-3 col-md-5">
+                                        <button type="submit" class="btn btn-primary">Zaloguj</button>
+                                    </div>
+                                </div>
+                                <small>Nie masz konta?</small>
+                                <a href="register" class="signup">Rejestracja</a>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyrights text-center">
+            <p style="color: black">© 2018 Copyright: <a href="/" class="external"> 4LapMe.com</a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+    <!--<div th:replace="fragments :: footer"></div>-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper.js/umd/popper.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js"></script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+    <!-- Main File-->
+    <script src="js/front.js"></script>
+</body>
+</html>

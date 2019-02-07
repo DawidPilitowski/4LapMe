@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments :: links">
+</head>
+<body>
+<div sec:authorize="hasRole('NONE')">
+    <script>
+        window.alert("Sprawdź swój e-mail i aktywuj konto!");
+        location.href = "/login ";
+    </script>
+</div>
+<div class="page login-page">
+    <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+            <div class="row">
+                <!-- Logo & Information Panel-->
+                <div class="col-lg-6">
+                    <div class="info d-flex align-items-center">
+                        <div class="content">
+                            <div class="logo">
+                                <h1>Profil użytkownika</h1>
+                            </div>
+                            <p>Jeszcze tylko chwila...</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form Panel    -->
+                <div class="col-lg-6 bg-white">
+                    <div class="form d-flex align-items-center">
+                        <div class="content">
+                            <!--<div th:object="${profile}">-->
+                                <div>
+                                    <h1 class="display-3" th:text="${'Witaj ' + profile.getLogin() + '!'}"></h1>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="label-material">Login użytkownika: </label>
+                                    <h1><div id="username" type="text" name="username" required
+                                             data-msg="Please enter your username" th:text="${profile.getLogin()}"></div></h1>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="label-material">Imię użytkownika: </label>
+                                    <h1><div type="text" name="username" required
+                                             data-msg="Please enter your username" th:text="${profile.getName()}"></div></h1>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="label-material">Nazwisko użytkownika: </label>
+                                    <h1><div type="text" name="username" required
+                                             data-msg="Please enter your username" th:text="${profile.getSurname()}"></div></h1>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="label-material">Email użytkownika: </label>
+                                    <h1><div type="text" name="username" required
+                                             data-msg="Please enter your username" th:text="${profile.getEmail()}"></div></h1>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username" class="label-material">Adres użytkownika: </label>
+                                    <h1><div type="text" name="username" required
+                                             data-msg="Please enter your username" th:text="${profile.getAddress()}"></div></h1>
+                                </div>
+                                <!--<div class="form-group">-->
+                                    <!--<label for="username" class="label-material">Numer konta użytkownika: </label>-->
+                                    <!--<h1><div type="text" name="username" required-->
+                                             <!--data-msg="Please enter your username" th:text="${profile.getAccountNumber()}"></div></h1>-->
+                                <!--</div>-->
+                                <!--<div class="form-group">-->
+                                    <!--<label for="username" class="label-material">Numer NIP użytkownika: </label>-->
+                                    <!--<h1><div type="text" name="username" required-->
+                                             <!--data-msg="Please enter your username" th:text="${profile.getNip()}"></div></h1>-->
+                                <!--</div>-->
+                                <!--<div class="form-group">-->
+                                    <!--<label for="photo" class="label-material">Avatar: </label>-->
+                                    <!--<div><img class="image-autowidth" id="photo"-->
+                                              <!--th:src="${'data:image/png;base64,'+image}"-->
+                                              <!--alt=""/></div>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                <!--<a class="btn btn-outline-secondary"-->
+                                <!--th:href="@{/profile/editPassword/{id}(id=${profile.getId()})}">Edytuj hasło</a>-->
+                                <!--</div>-->
+                                <div>
+                                    <div th:href="@{/edit}">
+                                        <form th:action="@{/edit}" method="get">
+                                            <!--<input type="hidden" name="id" th:value="${profile.id}"/>-->
+                                            <button type="submit" class="btn btn-primary btn-block">Edytuj profil</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div>
+                                    <form th:action="@{/profile}" method="post">
+                                        <input type="hidden" name="id" th:value="${profile.id}"/>
+                                        <button type="submit" onclick="alert('Czy na pewno chcesz usunąć konto?')" class="btn btn-outline-danger btn-block">Usuń konto</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyrights text-center">
+            <p style="color: black">© 2018 Copyright: <a href="/" class="external"> 4LapMe.com</a>
+            </p>
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/popper.js/umd/popper.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/jquery.cookie/jquery.cookie.js"></script>
+<script src="vendor/chart.js/Chart.min.js"></script>
+<script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+<script src="js/front.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+/*!* your styles go here *!*/
+.categories, .subCategories {
+    -webkit-transition: all 0.0s;
+    transition: all 0.0s;
+}
+
+.brand-text {
+    font-family: 'Permanent Marker', cursive;
+    color: black;
+}
+
+.menu-background {
+    background-color: #fff;
+    opacity: 0.7;
+}
+
+nav.navbar {
+    background: #fff;
+    background-image: url("/img/bg.jpg");
+    background-size: 600px;
+    background-repeat: repeat;}
+
+nav.navbar .menu-btn span {
+    background: black;
+}
+
+nav.navbar .menu-btn span:nth-of-type(2)::after {
+    background: black;
+}
+
+nav.navbar .menu-btn span:nth-of-type(2)::before {
+    background: black;
+}
+
+i.icon-search, i.fa-bell-o, i.fa-envelope-o, i.fa-sign-out, i.fa-sign-in, span.d-sm-inline, i.fa-user-plus, i.fa-bars, i.fa-list-ul, i.fa-shopping-cart, i.fa-user, i.fa-list-alt, i.fa-clipboard {
+    color: black;
+}
+
+.login-page::before {
+    background-size: 600px;
+    background-position: 100px 50px;
+}
+
+nav.side-navbar a[aria-expanded="true"] {
+    /*background: #f7a4e6;*/
+    color: #000;
+}
+
+nav.side-navbar ul li a:hover {
+    /*background: #f7e0f3;*/
+    /*border-left: 4px solid #F7A4E6;*/
+    color: #000;
+}
+
+.image-autowidth {
+    height: 80px;
+    max-height: 80px;
+    width: auto;
+}
+
+.image-width {
+    height: 300px;
+    max-height: 400px;
+    width: auto;
+    max-width: 300px;
+
+}
+
+.align-left-object {
+    left: 0px;
+}
+
+.price {
+    font-weight: bolder;
+    font-family: "Poppins", sans-serif;
+    font-size: xx-large;
+}
+
+.top-buffer {
+    margin-top: 20px;
+}
+
+header.page-header {
+    padding: 15px 0;
+}
+
+table.error-table td {
+    vertical-align: top;
+    border: solid 1px #888;
+    padding: 10px;
+}
+
+.error-image {
+    /*object-fit: cover;*/
+    width: 250px;
+    height: 350px;
+}
+
+span.font-white {
+    color: white;
+}
+.autor{
+
+    text-align: center;
+}

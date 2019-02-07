@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Nasza strona</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="/css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+<body>
+<div class="page login-page">
+    <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+            <div class="row">
+                <!-- Logo & Information Panel-->
+                <div class="col-lg-6">
+                    <div class="info d-flex align-items-center">
+                        <div class="content">
+                            <div class="logo">
+                                <h1>Edycja użytkownika</h1>
+                            </div>
+                            <p>Jeszcze tylko chwila...</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form Panel    -->
+                <div class="col-lg-6 bg-white">
+                    <div class="form d-flex align-items-center">
+                        <div class="content">
+                            <form th:action="@{/edit}" th:object="${userDTO}" method="post" enctype="multipart/form-data" >
+                                <div class="form-group">
+                                    <label for="address" class="label-material">Podaj imię:</label>
+                                    <input id="name" type="text" name="name" th:field="*{name}" required
+                                           data-msg="Podaj swoje imie" class="form-control middle">
+                                </div>
+                                <div class="form-group">
+                                    <label for="address" class="label-material">Podaj nazwisko:</label>
+                                    <input id="surname" type="text" name="surname" th:field="*{surname}" required
+                                           data-msg="Podaj swoje nazwisko" class="form-control middle">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email" class="label-material">Podaj email:</label>
+                                    <input id="email" type="email" name="email" th:field="*{email}" required
+                                           data-msg="Podaj swój email" class="form-control middle">
+                                </div>
+                                <div class="form-group">
+                                    <label for="address" class="label-material">Podaj adres:</label>
+                                    <input id="address" type="text" name="address" th:field="*{address}" required
+                                           data-msg="Podaj swój adres" class="form-control middle">
+                                </div>
+                                <!--<div class="form-group">-->
+                                    <!--<label for="phoneNumber" class="label-material">Podaj numer konta:</label>-->
+                                    <!--<input id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" class="form-control middle">-->
+                                <!--</div>-->
+                                <div class="form-group">
+                                    <input id="login" type="hidden" name="login" th:field="*{login}" required>
+                                </div>
+                                <!--<div class="form-group">-->
+                                <!--<input th:if="${error_message} != null" type="confirm-password"-->
+                                <!--name="confirm-password" th:field="*{confirm_password}">-->
+                                <!--<p class="error_message" th:text="${error_message}"></p>-->
+                                <!--</div>-->
+                                <div class="form-group">
+                                    <!-- Przycisk WYŚLIJ -->
+                                    <input type="submit" value="Wyślij formularz" />
+                                    <!-- Przycisk WYCZYŚĆ DANE -->
+                                    <input type="reset" value="Wyczyść dane" />
+                                </div>
+                                <p class="alert alert-success" th:if="${#httpServletRequest.getParameter('updated')}">
+                                    You changes have been
+                                    saved</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyrights text-center">
+            <p style="color: black">© 2018 Copyright: <a href="/" class="external"> 4LapMe.com</a>
+            </p>
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/popper.js/umd/popper.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/jquery.cookie/jquery.cookie.js"></script>
+<script src="vendor/chart.js/Chart.min.js"></script>
+<script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+<script src="js/front.js"></script>
+<!--<div th:replace="oldFragments :: footer"></div>-->
+</body>
+</html>
