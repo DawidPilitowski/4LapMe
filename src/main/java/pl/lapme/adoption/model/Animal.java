@@ -28,7 +28,7 @@ public class Animal {
     private byte[] image;
 
     @ManyToMany
-    Set<User> user;
+    Set<AppUser> user;
 
     public Animal(String name) {
         this.name = name;

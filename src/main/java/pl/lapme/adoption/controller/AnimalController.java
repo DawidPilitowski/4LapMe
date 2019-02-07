@@ -65,8 +65,8 @@ public class AnimalController {
     @GetMapping(path = "/add")
     public String addAnimal(Model model, AddAnimalDTO animalDTO) {
         AddAnimalDTO animal = new AddAnimalDTO();
-        System.out.println(userService.getLoggedInUser().getLogin());
-        animal.setSellingLogin(userService.getLoggedInUser().getLogin());
+        System.out.println(userService.getLoggedInUser().getUsername());
+        animal.setSellingLogin(userService.getLoggedInUser().getUsername());
         System.out.println(animal.getSellingLogin());
         List<Category> categories = categoryService.getAllList();
         model.addAttribute("animal", animalDTO);
