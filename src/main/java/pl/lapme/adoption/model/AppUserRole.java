@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserRole {
+public class AppUserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

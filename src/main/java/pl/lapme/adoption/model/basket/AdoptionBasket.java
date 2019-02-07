@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import pl.lapme.adoption.model.Animal;
-import pl.lapme.adoption.model.User;
+import pl.lapme.adoption.model.AppUser;
 import pl.lapme.adoption.service.AdoptionBasketInterface;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 public class AdoptionBasket implements AdoptionBasketInterface {
 
     private int orderNum;
-    private User userInfo;
+    private AppUser userInfo;
     private final List<BasketContentInfo> basketContents = new ArrayList<>();
 
     private BasketContentInfo findAnimalById(Long id) {
