@@ -49,7 +49,10 @@ public class UserController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("user_dto", new RegisterUserDTO());
+        RegisterUserDTO dto=new RegisterUserDTO();
+        //TODO change ROLES
+//        dto.setRoles(userRoleService.getRolesToSelect());
+        model.addAttribute("user_dto", dto);
         return "register";
     }
 
@@ -60,6 +63,15 @@ public class UserController {
             model.addAttribute("newUser", new RegisterUserDTO());
             model.addAttribute("failMsg", "Hasła są różne!");
             return "/register";
+        }
+        if (newUserDto.getEmail().isEmpty()){
+            return "redirect:/register?error_message=Email is empty";
+        }
+        if (newUserDto.getLogin().isEmpty()){
+            return "redirect:/register?error_message=Login is empty";
+        }
+        if (newUserDto.getPassword().isEmpty()||newUserDto.getConfirmPassword().isEmpty()){
+            return "redirect:/register?error_message=Password or Confirm Password is empty";
         }
 
         boolean isNew = userService.registerUser(newUserDto);
@@ -86,7 +98,6 @@ public class UserController {
             User appUser = userOptional.get();
             userService.makeUser(appUser.getId());
         }
-
         return "redirect:/login";
     }
 
@@ -110,17 +121,8 @@ public class UserController {
 
     @GetMapping("/edit")
     public String editProfile(Model model) {
-//        User user;
         User loggedInUser = userService.getLoggedInUser();
 
-//        if (loggedInUser.getId() == 0) {
-//            loggedInUser.getId() = loggedInUser.getId();
-//        }
-//        if (!loggedInUser.getId().equals(loggedInUser.getId())) {
-//            return "permission-";
-//        } else {
-//            user = loggedInUser;
-//        }
         EditProfileUserDTO editProfileUserDTO = new EditProfileUserDTO();
         editProfileUserDTO.setLogin(loggedInUser.getLogin());
         editProfileUserDTO.setEmail(loggedInUser.getEmail());
@@ -134,10 +136,6 @@ public class UserController {
     @PostMapping(value = "/edit")
     public String editPost(EditEmailUserDTO newUserDto, EditProfileUserDTO editProfileUserDTO) {
         String registerUserDTO = userService.getLoggedInUser().getEmail();
-//        System.out.println(registerUserDTO);
-//        if (result.hasFieldErrors("login")) {
-//            return "editUser";
-//        }
 
         if (!registerUserDTO.equals(editProfileUserDTO.getEmail())) {
             Context context = new Context();
@@ -145,8 +143,6 @@ public class UserController {
 
             String welcomeMail = templateEngine.process("welcomeMail", context);
             emailSender.sendEmail(newUserDto.getEmail(), "Witamy ponownie w 4LapMe!", welcomeMail);
-//            Optional<User> user = userService.findByid(id);
-//            user.get().setPrivilege(0);
             userService.makeUserNone(newUserDto);
             userService.updateUserDTO(editProfileUserDTO);
 
