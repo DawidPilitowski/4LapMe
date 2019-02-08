@@ -15,6 +15,7 @@ import pl.lapme.adoption.model.dto.EditProfileUserDTO;
 import pl.lapme.adoption.model.dto.RegisterUserDTO;
 import pl.lapme.adoption.service.EmailSender;
 import pl.lapme.adoption.service.LoginService;
+import pl.lapme.adoption.service.UserRoleService;
 import pl.lapme.adoption.service.UserService;
 
 import java.util.Base64;
@@ -32,6 +33,8 @@ public class UserController {
     private EmailSender emailSender;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private UserRoleService userRoleService;
 
     @ModelAttribute("currentUser")
     public AppUser getCurrentUser() {
@@ -61,10 +64,9 @@ public class UserController {
     @GetMapping("/register")
     public String register(Model model) {
         RegisterUserDTO dto = new RegisterUserDTO();
-        //TODO change ROLES
-//        dto.setRoles(userRoleService.getRolesToSelect());
+        dto.setRoles(userRoleService.getRoleToSelect());
         model.addAttribute("user_dto", dto);
-        return "register";
+        return "user/register";
     }
 
     @PostMapping("/register")
@@ -78,26 +80,23 @@ public class UserController {
         if (newUserDto.getEmail().isEmpty()) {
             return "redirect:/register?error_message=Email is empty";
         }
-        if (newUserDto.getLogin().isEmpty()) {
+        if (newUserDto.getUsername().isEmpty()) {
             return "redirect:/register?error_message=Login is empty";
         }
         if (newUserDto.getPassword().isEmpty() || newUserDto.getConfirmPassword().isEmpty()) {
             return "redirect:/register?error_message=Password or Confirm Password is empty";
         }
 
-//        boolean isNew = userService.registerUser(newUserDto);
+        Optional<AppUser> appUserOptional = userService.register(newUserDto);
 
-//        if (!isNew) {
-//            model.addAttribute("newUser", new RegisterUserDTO());
-//            model.addAttribute("failMsg", "Nazwa użytkownika zajęta!");
-//            return "/register";
-//        }
+        if (appUserOptional.isPresent()) {
+            Context context = new Context();
+            context.setVariable("user", userService.findByLogin(newUserDto.getUsername()));
 
-        Context context = new Context();
-        context.setVariable("user", userService.findByLogin(newUserDto.getLogin()));
-
-        String welcomeMail = templateEngine.process("welcomeMail", context);
-        emailSender.sendEmail(newUserDto.getEmail(), "Witamy w 4LapMe!", welcomeMail);
+            String welcomeMail = templateEngine.process("welcomeMail", context);
+            emailSender.sendEmail(newUserDto.getEmail(), "Witamy w 4LapMe!", welcomeMail);
+            return "login";
+        }
         return "login";
     }
 
@@ -164,6 +163,7 @@ public class UserController {
 //        System.out.println(newMail);
         return "redirect:/profile";
     }
+
     @GetMapping("/settings")
     public String employeeSettings(Model model, ChangeAppUserSettingsDto user,
                                    @RequestParam(name = "message", required = false) String message,
@@ -176,17 +176,19 @@ public class UserController {
         model.addAttribute("employee", ChangeAppUserSettingsDto.createForm(optionalAppUser.get()));
         return "user/settings";
     }
+
     @PostMapping("/settings/change/")
     public String changeSettings(Model model, ChangeAppUserSettingsDto changeAppUserSettingsDto) {
-        if((changeAppUserSettingsDto.getName().trim()).isEmpty()){
+        if ((changeAppUserSettingsDto.getName().trim()).isEmpty()) {
             return "redirect:/employee/settings?error_message=" + "User name is empty";
         }
-        if((changeAppUserSettingsDto.getSurname().trim()).isEmpty()){
+        if ((changeAppUserSettingsDto.getSurname().trim()).isEmpty()) {
             return "redirect:/employee/settings?error_message=" + "User surname is empty";
         }
         userService.changeSettings(changeAppUserSettingsDto, getCurrentUser());
         return "redirect:/employee/settings?message=" + "User edited";
     }
+
     @GetMapping("/settings/changePassword")
     public String employeePasswordSettings(Model model, ChangeAppUserSettingsDto employee,
                                            @RequestParam(name = "message", required = false) String message,
@@ -199,11 +201,12 @@ public class UserController {
         model.addAttribute("employee", ChangeAppUserSettingsDto.createForm(optionalAppUser.get()));
         return "employee/settings";
     }
+
     @PostMapping("/settings/changePassword/")
     public String changePasswordSettings(Model model, ChangeAppUserSettingsDto changeAppUserSettingsDto) {
         Long id = loginService.getLoggedInUser().get().getId();
 
-        if(!userService.ifOldAndNewPasswordAreTheSame(id,changeAppUserSettingsDto)){
+        if (!userService.ifOldAndNewPasswordAreTheSame(id, changeAppUserSettingsDto)) {
             return "redirect:/employee/settings?error_message=" + "Incorrect password. Try again.";
         }
         if (!changeAppUserSettingsDto.getConfirmPassword().equals(changeAppUserSettingsDto.getPassword())) {
