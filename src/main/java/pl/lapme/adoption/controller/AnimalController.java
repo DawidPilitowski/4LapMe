@@ -62,17 +62,17 @@ public class AnimalController {
         return animalService.getAllByGender(gender);
     }
 
-    @GetMapping(path = "/add")
-    public String addAnimal(Model model, AddAnimalDTO animalDTO) {
-        AddAnimalDTO animal = new AddAnimalDTO();
-        System.out.println(userService.getLoggedInUser().getUsername());
-        animal.setSellingLogin(userService.getLoggedInUser().getUsername());
-        System.out.println(animal.getSellingLogin());
-        List<Category> categories = categoryService.getAllList();
-        model.addAttribute("animal", animalDTO);
-        model.addAttribute("categories2", categories);
-        return "add/form";
-    }
+//    @GetMapping(path = "/add")
+//    public String addAnimal(Model model, AddAnimalDTO animalDTO) {
+//        AddAnimalDTO animal = new AddAnimalDTO();
+//        System.out.println(userService.getLoggedInUser().getUsername());
+//        animal.setSellingLogin(userService.getLoggedInUser().getUsername());
+//        System.out.println(animal.getSellingLogin());
+//        List<Category> categories = categoryService.getAllList();
+//        model.addAttribute("animal", animalDTO);
+//        model.addAttribute("categories2", categories);
+//        return "add/form";
+//    }
 
     @PostMapping(path = "/add")
     public String addAnimal(AddAnimalDTO animalDTO, @RequestParam("photo") MultipartFile photo) {

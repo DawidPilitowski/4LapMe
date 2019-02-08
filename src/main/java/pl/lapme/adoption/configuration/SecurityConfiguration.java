@@ -17,6 +17,7 @@ import pl.lapme.adoption.service.LoginService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private LoginService loginService;
 

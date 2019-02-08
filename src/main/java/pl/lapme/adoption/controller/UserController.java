@@ -10,8 +10,6 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import pl.lapme.adoption.model.AppUser;
 import pl.lapme.adoption.model.dto.ChangeAppUserSettingsDto;
-import pl.lapme.adoption.model.dto.EditEmailUserDTO;
-import pl.lapme.adoption.model.dto.EditProfileUserDTO;
 import pl.lapme.adoption.model.dto.RegisterUserDTO;
 import pl.lapme.adoption.service.EmailSender;
 import pl.lapme.adoption.service.LoginService;
@@ -91,7 +89,7 @@ public class UserController {
 
         if (appUserOptional.isPresent()) {
             Context context = new Context();
-            context.setVariable("user", userService.findByLogin(newUserDto.getUsername()));
+            context.setVariable("user", userService.findByUsername(newUserDto.getUsername()));
 
             String welcomeMail = templateEngine.process("welcomeMail", context);
             emailSender.sendEmail(newUserDto.getEmail(), "Witamy w 4LapMe!", welcomeMail);
@@ -115,7 +113,8 @@ public class UserController {
     public String showProfilePage(Model model) {
 
         String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
-        AppUser userByLogin = userService.findUserByLogin(userLogin);
+        Optional<AppUser> optionalUserByLogin = userService.findByUsername(userLogin);
+        AppUser userByLogin=optionalUserByLogin.get();
         if (userByLogin != null) {
             model.addAttribute("profile", userByLogin);
 
@@ -143,26 +142,26 @@ public class UserController {
 //        return "editUser";
 //    }
 
-    @PostMapping(value = "/edit")
-    public String editPost(EditEmailUserDTO newUserDto, EditProfileUserDTO editProfileUserDTO) {
-        String registerUserDTO = userService.getLoggedInUser().getEmail();
-
-        if (!registerUserDTO.equals(editProfileUserDTO.getEmail())) {
-            Context context = new Context();
-            context.setVariable("user", userService.findByLogin(newUserDto.getLogin()));
-
-            String welcomeMail = templateEngine.process("welcomeMail", context);
-            emailSender.sendEmail(newUserDto.getEmail(), "Witamy ponownie w 4LapMe!", welcomeMail);
-//            userService.makeUserNone(newUserDto);
-            userService.updateUserDTO(editProfileUserDTO);
-
-            return "login";
-        }
-        userService.updateUserDTO(editProfileUserDTO);
-//        String newMail = editProfileUserDTO.getEmail();
-//        System.out.println(newMail);
-        return "redirect:/profile";
-    }
+//    @PostMapping(value = "/edit")
+//    public String editPost(EditEmailUserDTO newUserDto, EditProfileUserDTO editProfileUserDTO) {
+//        String registerUserDTO = userService.g().getEmail();
+//
+//        if (!registerUserDTO.equals(editProfileUserDTO.getEmail())) {
+//            Context context = new Context();
+//            context.setVariable("user", userService.findByLogin(newUserDto.getLogin()));
+//
+//            String welcomeMail = templateEngine.process("welcomeMail", context);
+//            emailSender.sendEmail(newUserDto.getEmail(), "Witamy ponownie w 4LapMe!", welcomeMail);
+////            userService.makeUserNone(newUserDto);
+//            userService.updateUserDTO(editProfileUserDTO);
+//
+//            return "login";
+//        }
+//        userService.updateUserDTO(editProfileUserDTO);
+////        String newMail = editProfileUserDTO.getEmail();
+////        System.out.println(newMail);
+//        return "redirect:/profile";
+//    }
 
     @GetMapping("/settings")
     public String employeeSettings(Model model, ChangeAppUserSettingsDto user,

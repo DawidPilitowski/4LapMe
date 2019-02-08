@@ -25,6 +25,8 @@ public class LoginService implements UserDetailsService {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private HttpServletRequest request;
