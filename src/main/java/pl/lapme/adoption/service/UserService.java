@@ -1,32 +1,34 @@
 package pl.lapme.adoption.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.lapme.adoption.model.AppUserRole;
 import pl.lapme.adoption.model.ApplicationEvent;
 import pl.lapme.adoption.model.AppUser;
 
-import pl.lapme.adoption.model.dto.ChangeAppUserSettingsDto;
-import pl.lapme.adoption.model.dto.EditEmailUserDTO;
-import pl.lapme.adoption.model.dto.EditProfileUserDTO;
-import pl.lapme.adoption.model.dto.RegisterUserDTO;
+import pl.lapme.adoption.model.dto.*;
 import pl.lapme.adoption.repository.UserRepository;
+import pl.lapme.adoption.repository.UserRoleRopository;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 
 @Service
-
 public class UserService {
 
-
+    @Autowired
     private UserRepository userRepository;
 
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
+    @Autowired
+    private UserRoleRopository userRoleRopository;
+    @Autowired
+    private LoginService loginService;
 
     public Iterable<AppUser> getAllUsers() {
         return userRepository.findAll();
@@ -60,7 +62,7 @@ public class UserService {
         }
     }
 
-    public Optional<AppUser> findByid(Long id) {
+    public Optional<AppUser> findById(Long id) {
         return userRepository.findById(id);
     }
 
@@ -77,7 +79,7 @@ public class UserService {
 //
 //        if (optionalUser.isPresent()) {
 //            AppUser appUser = optionalUser.get();
-//            appUser.setPrivilege(1);
+//            appUser.setRoles();
 //            userRepository.save(appUser);
 //            return true;
 //        }
@@ -113,7 +115,7 @@ public class UserService {
     }
 
     public Optional<AppUser> findByUsername(String username) {
-        return userRepository.findByUsername();
+        return userRepository.findByUsername(username);
     }
 
     public Optional<AppUser> getUserById(Long id) {
@@ -146,5 +148,89 @@ public class UserService {
             currentUser.setPassword(bCryptPasswordEncoder.encode(changeAppUserSettingsDto.getPassword()));
         }
         return userRepository.save(currentUser);
+    }
+
+    public Optional<AppUser> register(RegisterUserDTO newUserDto) {
+        Optional<AppUser> optionalAppUser = userRepository.findByUsername(newUserDto.getUsername());
+        if (optionalAppUser.isPresent()) {
+            return Optional.empty();
+        }
+        AppUser newUser = new AppUser();
+        newUser.setEmail(newUserDto.getEmail().trim());
+        newUser.setPassword(bCryptPasswordEncoder.encode(newUserDto.getPassword()));
+        newUser.setUsername(newUserDto.getUsername().trim());
+
+        newUser.setRoles(new HashSet<>(Arrays.asList(userRoleRopository.findByName("ROLE_USER").get())));
+
+        if (newUserDto.getRoles().getRole_admin() != null) {
+            Optional<AppUserRole> userRole = userRoleRopository.findByName("ROLE_ADMIN");
+            if (userRole.isPresent()) {
+                newUser.getRoles().add(userRole.get());
+            }
+        }
+        if (newUserDto.getRoles().getRole_shelter() != null) {
+            Optional<AppUserRole> userRole = userRoleRopository.findByName("ROLE_SHELTER");
+            if (userRole.isPresent()) {
+                newUser.getRoles().add(userRole.get());
+            }
+        }
+        if (newUserDto.getRoles().getRole_breeder() != null) {
+            Optional<AppUserRole> userRole = userRoleRopository.findByName("ROLE_BREEDER");
+            if (userRole.isPresent()) {
+                newUser.getRoles().add(userRole.get());
+            }
+        }
+        userRepository.save(newUser);
+        return Optional.of(newUser);
+    }
+
+    public void modifiedUser(ChangeAppUserSettingsDto dto, Long id) {
+        Optional<AppUser> appUserOptional = userRepository.findById(id);
+        if (appUserOptional.isPresent()) {
+            AppUser appUser = appUserOptional.get();
+            if (loginService.isAdmin()) {
+                appUser.setUsername(dto.getUsername());
+                appUser.setEmail(dto.getEmail());
+                userRepository.save(appUser);
+            }
+        }
+    }
+
+    public void modifiedUserPassword(ChangeAppUserSettingsDto dto, Long id) {
+        Optional<AppUser> optionalAppUser = userRepository.findById(id);
+        if (optionalAppUser.isPresent()) {
+            AppUser appUser = optionalAppUser.get();
+            if (loginService.isAdmin()) {
+                appUser.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+                userRepository.save(appUser);
+            }
+        }
+    }
+
+    public void modifiedUserRole(ModifiedRoleDto modifiedRoleDto, Long id) {
+        Optional<AppUser> optionalAppUser = userRepository.findById(id);
+
+        if (optionalAppUser.isPresent()){
+            AppUser newUser = optionalAppUser.get();
+            if (loginService.isAdmin()){
+                newUser.setRoles(new HashSet<>(Arrays.asList(userRoleRopository.findByName("ROLE_USER").get())));
+
+                if (modifiedRoleDto.getRoles().getRole_admin()!=null){
+                    Optional<AppUserRole>appUserRole=userRoleRopository.findByName("ROLE_ADMIN");
+                    appUserRole.ifPresent(newRole->newUser.getRoles().add(newRole));
+                }
+                if (modifiedRoleDto.getRoles().getRole_shelter()!=null){
+                    Optional<AppUserRole>appUserRole=userRoleRopository.findByName("ROLE_SHELTER");
+                    appUserRole.ifPresent(newRole->newUser.getRoles().add(newRole));
+                }
+                if (modifiedRoleDto.getRoles().getRole_breeder()!=null){
+                    Optional<AppUserRole>appUserRole=userRoleRopository.findByName("ROLE_BREEDER");
+                    appUserRole.ifPresent(newRole->newUser.getRoles().add(newRole));
+                }
+                userRepository.save(newUser);
+            }
+        }
+
+
     }
 }
