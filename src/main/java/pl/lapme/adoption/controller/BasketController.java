@@ -6,8 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.lapme.adoption.model.Animal;
 import pl.lapme.adoption.model.basket.AdoptionBasket;
-import pl.lapme.adoption.model.basket.BasketContentInfo;
-import pl.lapme.adoption.model.dto.AddAnimalDTO;
 import pl.lapme.adoption.repository.AnimalRepository;
 
 import javax.annotation.PostConstruct;

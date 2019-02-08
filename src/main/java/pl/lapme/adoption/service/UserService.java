@@ -27,6 +27,7 @@ public class UserService {
 
     @Autowired
     private UserRoleRopository userRoleRopository;
+
     @Autowired
     private LoginService loginService;
 
@@ -34,45 +35,33 @@ public class UserService {
         return userRepository.findAll();
     }
 
-//    public boolean registerUser(RegisterUserDTO dto) {
+//    public void updateUserDTO(EditProfileUserDTO modifyUserDTO) {
+//        String login = modifyUserDTO.getLogin();
 //
-//        Optional<AppUser> userByUsername = userRepository.findUserByLogin(dto.getLogin());
-//        if (userByUsername.isPresent()) {
-//            return false;
+//        Optional<AppUser> optionalAppUser = userRepository.findUserByLogin(login);
+//
+//        if (optionalAppUser.isPresent()) {
+//            AppUser user = optionalAppUser.get();
+//            user.setAddress(modifyUserDTO.getAddress());
+//            user.setName(modifyUserDTO.getName());
+//            user.setEmail(modifyUserDTO.getEmail());
+//            user.setSurname(modifyUserDTO.getSurname());
+//            user.setPhoneNumber(modifyUserDTO.getPhoneNumber());
+//            userRepository.save(user);
 //        }
-//        AppUser newUser = new AppUser(dto.getLogin(), bCryptPasswordEncoder.encode(dto.getPassword()), 0);
-//        newUser.setEmail(dto.getEmail());
-//        userRepository.save(newUser);
-//        return true;
 //    }
-
-    public void updateUserDTO(EditProfileUserDTO modifyUserDTO) {
-        String login = modifyUserDTO.getLogin();
-
-        Optional<AppUser> optionalAppUser = userRepository.findUserByLogin(login);
-
-        if (optionalAppUser.isPresent()) {
-            AppUser user = optionalAppUser.get();
-            user.setAddress(modifyUserDTO.getAddress());
-            user.setName(modifyUserDTO.getName());
-            user.setEmail(modifyUserDTO.getEmail());
-            user.setSurname(modifyUserDTO.getSurname());
-            user.setPhoneNumber(modifyUserDTO.getPhoneNumber());
-            userRepository.save(user);
-        }
-    }
-
-    public Optional<AppUser> findById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    public Optional<AppUser> findByLogin(String login) {
-        return userRepository.findUserByLogin(login);
-    }
-
-    public Optional<AppUser> findByPassword(String code) {
-        return userRepository.findByPassword(code);
-    }
+//
+//    public Optional<AppUser> findById(Long id) {
+//        return userRepository.findById(id);
+//    }
+//
+//    public Optional<AppUser> findByLogin(String login) {
+//        return userRepository.findUserByLogin(login);
+//    }
+//
+//    public Optional<AppUser> findByPassword(String code) {
+//        return userRepository.findByPassword(code);
+//    }
 
 //    public boolean makeUser(Long id) {
 //        Optional<AppUser> optionalUser = userRepository.findById(id);
@@ -86,29 +75,29 @@ public class UserService {
 //        return false;
 //    }
 
-    public AppUser getLoggedInUser() { //w tym miejscu pytanie czy nie powinno być zamiast name login?
-        String login = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findOneByLogin(login);
-    }
-
-    public AppUser findUserByLogin(String login) {
-        return userRepository.findByLogin(login);
-    }
-
-    public AppUser findOneId(Long id) {
-        return userRepository.findOneById(id);
-    }
-
-//    public void makeUserNone(EditEmailUserDTO newUserDto) {
-//        String login = newUserDto.getLogin();
-//        Optional<AppUser> optionalAppUser = userRepository.findUserByLogin(login);
-//        if (optionalAppUser.isPresent()) {
-//            AppUser user = optionalAppUser.get();
-//            user.setPrivilege(0);
-//            userRepository.save(user);
-//        }
-//
+//    public AppUser getLoggedInUser() { //w tym miejscu pytanie czy nie powinno być zamiast name login?
+//        String login = SecurityContextHolder.getContext().getAuthentication().getName();
+//        return userRepository.findOneByLogin(login);
 //    }
+//
+//    public AppUser findUserByLogin(String login) {
+//        return userRepository.findByLogin(login);
+//    }
+//
+//    public AppUser findOneId(Long id) {
+//        return userRepository.findOneById(id);
+//    }
+//
+////    public void makeUserNone(EditEmailUserDTO newUserDto) {
+////        String login = newUserDto.getLogin();
+////        Optional<AppUser> optionalAppUser = userRepository.findUserByLogin(login);
+////        if (optionalAppUser.isPresent()) {
+////            AppUser user = optionalAppUser.get();
+////            user.setPrivilege(0);
+////            userRepository.save(user);
+////        }
+////
+////    }
 
     public void logAuthenticationAttempt(String name, ApplicationEvent applicationEvent) {
 
@@ -210,27 +199,31 @@ public class UserService {
     public void modifiedUserRole(ModifiedRoleDto modifiedRoleDto, Long id) {
         Optional<AppUser> optionalAppUser = userRepository.findById(id);
 
-        if (optionalAppUser.isPresent()){
+        if (optionalAppUser.isPresent()) {
             AppUser newUser = optionalAppUser.get();
-            if (loginService.isAdmin()){
+            if (loginService.isAdmin()) {
                 newUser.setRoles(new HashSet<>(Arrays.asList(userRoleRopository.findByName("ROLE_USER").get())));
 
-                if (modifiedRoleDto.getRoles().getRole_admin()!=null){
-                    Optional<AppUserRole>appUserRole=userRoleRopository.findByName("ROLE_ADMIN");
-                    appUserRole.ifPresent(newRole->newUser.getRoles().add(newRole));
+                if (modifiedRoleDto.getRoles().getRole_admin() != null) {
+                    Optional<AppUserRole> appUserRole = userRoleRopository.findByName("ROLE_ADMIN");
+                    appUserRole.ifPresent(newRole -> newUser.getRoles().add(newRole));
                 }
-                if (modifiedRoleDto.getRoles().getRole_shelter()!=null){
-                    Optional<AppUserRole>appUserRole=userRoleRopository.findByName("ROLE_SHELTER");
-                    appUserRole.ifPresent(newRole->newUser.getRoles().add(newRole));
+                if (modifiedRoleDto.getRoles().getRole_shelter() != null) {
+                    Optional<AppUserRole> appUserRole = userRoleRopository.findByName("ROLE_SHELTER");
+                    appUserRole.ifPresent(newRole -> newUser.getRoles().add(newRole));
                 }
-                if (modifiedRoleDto.getRoles().getRole_breeder()!=null){
-                    Optional<AppUserRole>appUserRole=userRoleRopository.findByName("ROLE_BREEDER");
-                    appUserRole.ifPresent(newRole->newUser.getRoles().add(newRole));
+                if (modifiedRoleDto.getRoles().getRole_breeder() != null) {
+                    Optional<AppUserRole> appUserRole = userRoleRopository.findByName("ROLE_BREEDER");
+                    appUserRole.ifPresent(newRole -> newUser.getRoles().add(newRole));
                 }
                 userRepository.save(newUser);
             }
         }
 
 
+    }
+
+    public Optional<AppUser> findById(Long id) {
+        return userRepository.findById(id);
     }
 }
