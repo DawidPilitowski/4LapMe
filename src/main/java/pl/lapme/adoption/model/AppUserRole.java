@@ -23,7 +23,7 @@ public class AppUserRole {
 
     @Override
     public String toString() {
-        return "EmployeeRole{" +
+        return "AppUserRole{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

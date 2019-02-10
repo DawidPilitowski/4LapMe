@@ -1,9 +1,7 @@
 package pl.lapme.adoption.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -12,8 +10,9 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AppUser {
@@ -48,16 +47,16 @@ public class AppUser {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "AppUser{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", address='" + address + '\'' +
                 ", phoneNumber=" + phoneNumber +
+                ", password='" + password + '\'' +
                 ", accountNumber=" + accountNumber +
                 ", nip=" + nip +
-                ", email='" + email + '\'' +
                 '}';
     }
 }

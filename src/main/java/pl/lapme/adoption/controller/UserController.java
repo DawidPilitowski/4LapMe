@@ -39,64 +39,22 @@ public class UserController {
         return loginService.getLoggedInUser().get();
     }
 
-    @GetMapping("/")
-    public String homePage() {
-        return "home";
-    }
+//    @GetMapping("/")
+//    public String homePage() {
+//        return "home";
+//    }
+//
+//    @GetMapping("/home")
+//    public String homePage1() {
+//        return "home";
+//    }
+//
+//    @GetMapping("/chat")
+//    public String chat() {
+//        return "chat";
+//    }
 
-    @GetMapping("/home")
-    public String homePage1() {
-        return "home";
-    }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
-    @GetMapping("/chat")
-    public String chat() {
-        return "chat";
-    }
-
-    @GetMapping("/register")
-    public String register(Model model) {
-        RegisterUserDTO dto = new RegisterUserDTO();
-        dto.setRoles(userRoleService.getRoleToSelect());
-        model.addAttribute("user_dto", dto);
-        return "user/register";
-    }
-
-    @PostMapping("/register")
-    public String addUser(Model model, RegisterUserDTO newUserDto) {
-
-        if (!newUserDto.getPassword().equals(newUserDto.getConfirmPassword())) {
-            model.addAttribute("newUser", new RegisterUserDTO());
-            model.addAttribute("failMsg", "Hasła są różne!");
-            return "/register";
-        }
-        if (newUserDto.getEmail().isEmpty()) {
-            return "redirect:/register?error_message=Email is empty";
-        }
-        if (newUserDto.getUsername().isEmpty()) {
-            return "redirect:/register?error_message=Login is empty";
-        }
-        if (newUserDto.getPassword().isEmpty() || newUserDto.getConfirmPassword().isEmpty()) {
-            return "redirect:/register?error_message=Password or Confirm Password is empty";
-        }
-
-        Optional<AppUser> appUserOptional = userService.register(newUserDto);
-
-        if (appUserOptional.isPresent()) {
-            Context context = new Context();
-            context.setVariable("user", userService.findByUsername(newUserDto.getUsername()));
-
-            String welcomeMail = templateEngine.process("welcomeMail", context);
-            emailSender.sendEmail(newUserDto.getEmail(), "Witamy w 4LapMe!", welcomeMail);
-            return "login";
-        }
-        return "login";
-    }
 
 //    @GetMapping("/activation")
 //    public String activateUser(@RequestParam(name = "code") String code) {
@@ -164,7 +122,7 @@ public class UserController {
 //    }
 
     @GetMapping("/settings")
-    public String employeeSettings(Model model, ChangeAppUserSettingsDto user,
+    public String userSettings(Model model, ChangeAppUserSettingsDto user,
                                    @RequestParam(name = "message", required = false) String message,
                                    @RequestParam(name = "error_message", required = false) String error_message) {
         Long id = loginService.getLoggedInUser().get().getId();
@@ -172,24 +130,24 @@ public class UserController {
 
         model.addAttribute("error_message", error_message);
         model.addAttribute("message", message);
-        model.addAttribute("employee", ChangeAppUserSettingsDto.createForm(optionalAppUser.get()));
+        model.addAttribute("user", ChangeAppUserSettingsDto.createForm(optionalAppUser.get()));
         return "user/settings";
     }
 
     @PostMapping("/settings/change/")
     public String changeSettings(Model model, ChangeAppUserSettingsDto changeAppUserSettingsDto) {
         if ((changeAppUserSettingsDto.getName().trim()).isEmpty()) {
-            return "redirect:/employee/settings?error_message=" + "User name is empty";
+            return "redirect:/user/settings?error_message=" + "User name is empty";
         }
         if ((changeAppUserSettingsDto.getSurname().trim()).isEmpty()) {
-            return "redirect:/employee/settings?error_message=" + "User surname is empty";
+            return "redirect:/user/settings?error_message=" + "User surname is empty";
         }
         userService.changeSettings(changeAppUserSettingsDto, getCurrentUser());
-        return "redirect:/employee/settings?message=" + "User edited";
+        return "redirect:/user/settings?message=" + "User edited";
     }
 
     @GetMapping("/settings/changePassword")
-    public String employeePasswordSettings(Model model, ChangeAppUserSettingsDto employee,
+    public String userPasswordSettings(Model model, ChangeAppUserSettingsDto user,
                                            @RequestParam(name = "message", required = false) String message,
                                            @RequestParam(name = "error_message", required = false) String error_message) {
         Long id = loginService.getLoggedInUser().get().getId();
@@ -197,8 +155,8 @@ public class UserController {
 
         model.addAttribute("message", message);
         model.addAttribute("error_message", error_message);
-        model.addAttribute("employee", ChangeAppUserSettingsDto.createForm(optionalAppUser.get()));
-        return "employee/settings";
+        model.addAttribute("user", ChangeAppUserSettingsDto.createForm(optionalAppUser.get()));
+        return "user/settings";
     }
 
     @PostMapping("/settings/changePassword/")
@@ -206,16 +164,16 @@ public class UserController {
         Long id = loginService.getLoggedInUser().get().getId();
 
         if (!userService.ifOldAndNewPasswordAreTheSame(id, changeAppUserSettingsDto)) {
-            return "redirect:/employee/settings?error_message=" + "Incorrect password. Try again.";
+            return "redirect:/user/settings?error_message=" + "Incorrect password. Try again.";
         }
         if (!changeAppUserSettingsDto.getConfirmPassword().equals(changeAppUserSettingsDto.getPassword())) {
-            return "redirect:/employee/settings?error_message=" + "Password and confirm password are not the same";
+            return "redirect:/user/settings?error_message=" + "Password and confirm password are not the same";
         }
         if (changeAppUserSettingsDto.getPassword().trim().isEmpty() ||
                 changeAppUserSettingsDto.getConfirmPassword().trim().isEmpty()) {
-            return "redirect:/employee/settings?error_message=" + "Empty password or confirm password";
+            return "redirect:/user/settings?error_message=" + "Empty password or confirm password";
         }
         userService.changePasswordSettings(changeAppUserSettingsDto, getCurrentUser());
-        return "redirect:/employee/settings?message=" + "User password edited";
+        return "redirect:/user/settings?message=" + "User password edited";
     }
 }

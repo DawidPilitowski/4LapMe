@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="template:: head">
+</head>
+<body>
+<header th:replace="template :: navigator"></header>
+<main role="main" class="container">
+    <div>
+        <div class="row align-content-center justify-content-center">
+            <h2 th:text="#{ctrl.error}"></h2>
+        </div>
+        <div class="row align-content-center justify-content-center">
+            <div class="row align-content-center justify-content-center">
+                <span th:text="#{error.info.text}"></span>
+            </div>
+        </div>
+        <div class="row align-content-center justify-content-center">
+            <div class="row align-content-center justify-content-center">
+                <img th:src="@{/img/errorPicture.png}" class="error-image" height="300" widtg="225">
+            </div>
+        </div>
+        <div class="row align-content-center justify-content-center">
+            <table class="error-table">
+                <tr>
+                    <td th:text="#{error.date}"></td>
+                    <td th:text="${timestamp}"/>
+                </tr>
+                <tr>
+                    <td th:text="#{error.path}"></td>
+                    <td th:text="${path}"/>
+                </tr>
+                <tr>
+                    <td th:text="#{error.error}"></td>
+                    <td th:text="${error}"/>
+                </tr>
+                <tr>
+                    <td th:text="#{error.status}"></td>
+                    <td th:text="${status}"/>
+                </tr>
+                <tr sec:authorize="hasRole('ROLE_ADMIN')">
+                    <td th:text="#{error.message}"></td>
+                    <td th:text="${message}"/>
+                </tr>
+                <tr  sec:authorize="hasRole('ROLE_ADMIN')">
+                    <td th:text="#{error.exception}"></td>
+                    <td th:text="${exception}"/>
+                </tr>
+                <tr  sec:authorize="hasRole('ROLE_ADMIN')">
+                    <td th:text="#{error.trace}"></td>
+                    <td>
+                        <pre th:text="${trace}"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row align-content-center justify-content-center">
+        <a class="button w-100" th:href="@{'/'}" th:text="#{ctrl.back.to.home.page}"></a>
+    </div>
+</main>
+</body>
+</html>

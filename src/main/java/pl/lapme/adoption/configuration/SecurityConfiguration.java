@@ -34,6 +34,7 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
                         "/",
                         "/login",
                         "/i18n/**",
+                        "/register",
                         "/webjars/**",
                         "/locale",
                         "/img/**",

@@ -151,24 +151,6 @@ public class UserService {
 
         newUser.setRoles(new HashSet<>(Arrays.asList(userRoleRopository.findByName("ROLE_USER").get())));
 
-        if (newUserDto.getRoles().getRole_admin() != null) {
-            Optional<AppUserRole> userRole = userRoleRopository.findByName("ROLE_ADMIN");
-            if (userRole.isPresent()) {
-                newUser.getRoles().add(userRole.get());
-            }
-        }
-        if (newUserDto.getRoles().getRole_shelter() != null) {
-            Optional<AppUserRole> userRole = userRoleRopository.findByName("ROLE_SHELTER");
-            if (userRole.isPresent()) {
-                newUser.getRoles().add(userRole.get());
-            }
-        }
-        if (newUserDto.getRoles().getRole_breeder() != null) {
-            Optional<AppUserRole> userRole = userRoleRopository.findByName("ROLE_BREEDER");
-            if (userRole.isPresent()) {
-                newUser.getRoles().add(userRole.get());
-            }
-        }
         userRepository.save(newUser);
         return Optional.of(newUser);
     }
