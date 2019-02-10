@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template:: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header th:replace="template :: navigator"></header>
+<main role="main" class="container">
+    <div class="container aligned-margines">
+        <div class="row container window aligned-margines">
+            <div class="row col-12">
+                <h2 class="table-head-title" th:text="#{animal.list}"/>
+            </div>
+            <div class="row col-12 w-100" th:each="animal:${showAnimal}">
+                <div class="col-3 separate-left">
+                    <div class="row details-colored">
+                        <div class="col-5" th:text="#{id}"/>
+                        <a class="col-7" th:text="*{animal.id}"></a>
+                    </div>
+                    <div class="row details-colored">
+                        <div class="col-5" th:text="#{name}"/>
+                        <a th:href="@{'animal/details'+${animal.id}}" class="col-7" th:text="*{animal.name}"></a>
+                    </div>
+                    <div class="row details-colored">
+                        <div class="col-5" th:text="#{name}"/>
+                        <div class="col-7" th:text="*{animal.race}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="template :: foot">
+</footer>
+<div th:replace="template :: scripts"/>
+</body>
+</html>

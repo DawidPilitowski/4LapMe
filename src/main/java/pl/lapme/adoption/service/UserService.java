@@ -208,4 +208,49 @@ public class UserService {
     public Optional<AppUser> findById(Long id) {
         return userRepository.findById(id);
     }
+
+    public Optional<AppUser> addUser(UserModifyDto newUserDto) {
+        Optional<AppUser> optionalAppUser = userRepository.findByUsername(newUserDto.getUsername());
+        if (optionalAppUser.isPresent()) {
+            return Optional.empty();
+        }
+
+        AppUser appUser = new AppUser();
+        if (newUserDto.getName().isEmpty()) {
+            appUser.setName(null);
+        } else {
+            appUser.setName(newUserDto.getName());
+        }
+        appUser.setEmail(newUserDto.getEmail().trim());
+        appUser.setPassword(bCryptPasswordEncoder.encode(newUserDto.getPassword()));
+        appUser.setUsername(newUserDto.getUsername().trim());
+        if (newUserDto.getSurname().isEmpty()) {
+            appUser.setSurname(null);
+        } else {
+            appUser.setSurname(newUserDto.getSurname());
+
+        }
+        appUser.setRoles(new HashSet<>(Arrays.asList(userRoleRopository.findByName("ROLE_USER").get())));
+
+        if (newUserDto.getRoles().getRole_admin() != null) {
+            Optional<AppUserRole> userRole = userRoleRopository.findByName("ROLE_ADMIN");
+            if (userRole.isPresent()) {
+                appUser.getRoles().add(userRole.get());
+            }
+        }
+        if (newUserDto.getRoles().getRole_shelter() != null) {
+            Optional<AppUserRole> userRole = userRoleRopository.findByName("ROLE_SHELTER");
+            if (userRole.isPresent()) {
+                appUser.getRoles().add(userRole.get());
+            }
+        }
+        if (newUserDto.getRoles().getRole_breeder() != null) {
+            Optional<AppUserRole> userRole = userRoleRopository.findByName("ROLE_BREEDER");
+            if (userRole.isPresent()) {
+                appUser.getRoles().add(userRole.get());
+            }
+        }
+        appUser = userRepository.save(appUser);
+        return Optional.of(appUser);
+    }
 }

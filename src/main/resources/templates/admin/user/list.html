@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template:: head">
+    <meta charset="UTF-8">
+    <title th:text="#{user.list.name}"/>
+</head>
+<body>
+<header th:replace="template :: navigator"></header>
+
+<main role="main" class="container">
+    <div class="container aligned-margines">
+        <div class="row container window aligned-margines">
+            <h2 class="table-head-title" th:text="#{user.list.title}"/>
+            <div class="listing-container container">
+                <div class="row table-header">
+                    <div class="col-1" th:text="#{id}"/> <!--id-->
+                    <div class="col-2" th:text="#{person.name}"/>
+                    <div class="col-2" th:text="#{surname}"/>
+                    <div class="col-2" th:text="#{username}"/>
+                    <div class="col-2" th:text="#{email}"/>
+                    <div class="col-2" th:text="#{roles}"/>
+                    <div class="col-1" th:text="#{actions}"/>
+                </div>
+                <div class="row colored" th:each=" user : ${userList}">
+                    <div class="col-1" th:text="${user.id}"/> <!--id-->
+                    <div class="col-2" th:text="${user.name}"></div>
+                    <div class="col-2" th:text="${user.surname}"></div>
+                    <div class="col-2" th:text="${user.username}"></div>
+                    <div class="col-2" th:text="${user.email}"></div>
+                    <div class="col-2">
+                        <div class="col-12" th:each="roles:${user.getRoles()}">
+                            <li th:text="*{roles.getName()}"></li>
+                        </div>
+                    </div>
+                    <div class="col-1 row">
+                        <div class="col-3">
+                            <div class="col-3">
+                                <a class="link"
+                                   th:href="@{'/admin/user/edit/' + ${user.getId()}}" th:text="#{ctrl.edit}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="offset-md-10 col-md-2 paddingless">
+                <a class="button w-100" th:href="@{/admin/user/add}" th:text="#{add.new}"/>
+                <a class="button w-100" th:href="@{'/'}" th:text="#{ctrl.back.to.home.page}"></a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="template :: foot">
+</footer>
+<div th:replace="template :: scripts">
+</div>
+</body>
+</html>
