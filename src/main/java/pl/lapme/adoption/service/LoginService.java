@@ -78,6 +78,6 @@ public class LoginService implements UserDetailsService {
 
     public boolean isAdmin() {
         return getLoggedInUser().get().getRoles().stream().anyMatch(
-                employeeRole -> employeeRole.getName().equals("ROLE_ADMIN"));
+                userRole -> userRole.getName().equals("ROLE_ADMIN"));
     }
 }

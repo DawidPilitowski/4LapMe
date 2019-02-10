@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+</head>
+<head th:replace="template:: head">
+    <meta charset="UTF-8">
+    <title th:text="#{user.form.title}"/>
+</head>
+<body>
+<header th:replace="template :: navigator"></header>
+<main role="main" class="container">
+    <div class="container aligned-margines">
+        <div class="row container window aligned-margines">
+            <h2 class="table-head-title" th:text="#{user.form.title}"/>
+            <form class="listing-container container" th:action="@{/register}" method="post"
+                  th:object="${user_dto}">
+                <div class="row">
+                    <div class="col-6">
+                        <label for="username" th:text="#{username}"/>
+                    </div>
+                    <div class="col-6">
+                        <input required class="form-control" id="username" th:field="*{username}" th:value="*{username}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label for="email" th:text="#{email}"/>
+                    </div>
+                    <div class="col-6">
+                        <input required class="form-control" id="email" th:field="*{email}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label for="password" th:text="#{password}"/>
+                    </div>
+                    <div class="col-6">
+                        <input required class="form-control" id="password" type="password" th:field="*{password}"
+                               th:value="*{password}"/>
+                        <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label for="passwordConfirm"th:text="#{confirm.password}"/>
+                    </div>
+                    <div class="col-6">
+                        <input required class="form-control" type="password" id="passwordConfirm" th:field="*{confirmPassword}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-6 col-6">
+                        <input class="form-control button" type="submit" th:value="#{add}">
+                        <a class="button w-100" th:href="@{'/admin/user/list/'}" th:text="#{ctrl.previous}"></a>
+                    </div>
+                </div>
+                <script>$(".toggle-password").click(function () {
+
+                    $(this).toggleClass("fa-eye fa-eye-slash");
+                    var input = $($(this).attr("toggle"));
+                    if (input.attr("type") == "password") {
+                        input.attr("type", "text");
+                    } else {
+                        input.attr("type", "password");
+                    }
+                });
+                </script>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+<!--<div th:replace="fragments :: footer"></div>-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/popper.js/umd/popper.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/jquery.cookie/jquery.cookie.js"></script>
+<script src="vendor/chart.js/Chart.min.js"></script>
+<script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+<script src="js/front.js"></script>
+
+</html>
