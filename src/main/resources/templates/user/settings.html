@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="template:: head">
     <meta charset="UTF-8">
-    <title th:text="#{edit.user.account}"/>
+    <title th:text="#{settings.title}"/>
 </head>
 <body>
 <header th:replace="template :: navigator"></header>
@@ -11,17 +11,34 @@
     <div class="container aligned-margines">
         <div class="container window aligned-margines">
             <div class="row col-12">
-                <h2 class="table-head-title" th:text="#{edit.user.account}"/>
+                <h2 class="table-head-title" th:text="#{settings.change}"/>
             </div>
-            <form th:object="${appUser}" th:action="@{'/admin/user/edit/'+ ${appUser.getId()}}" method="post">
+            <form th:object="${user}" th:action="@{/user/settings/change/}" method="post">
                 <input th:field="*{id}" th:value="*{id}" name="modifiedId" hidden>
                 <div class="row offset-md-1 col-md-10">
                     <div class="col-6">
-                        <label for="supplierName" th:text="#{username}"/>
+                        <label for="username" th:text="#{username}"/>
                     </div>
                     <div class="col-6">
-                        <input required class="form-control roundless" type="text" id="supplierName"
-                               th:field="*{username}">
+                        <label class="form-control roundless" type="text" id="username" name="username"
+                               th:text="*{username}"/>
+                    </div>
+                </div>
+                <div class="row offset-md-1 col-md-10">
+                    <div class="col-6">
+                        <label for="name" th:text="#{settings.name}"/>
+                    </div>
+                    <div class="col-6">
+                        <input required class="form-control roundless" type="text" id="name" th:field="*{name}">
+                    </div>
+                </div>
+                <div class="row offset-md-1 col-md-10">
+                    <div class="col-6">
+                        <label for="surname" th:text="#{settings.surname}"/>
+                    </div>
+                    <div class="col-6">
+                        <input required class="form-control roundless" type="text" id="surname" name="surname"
+                               th:field="*{surname}">
                     </div>
                 </div>
                 <div class="row offset-md-1 col-md-10">
@@ -43,10 +60,20 @@
         <hr>
         <div class="container window aligned-margines">
             <div class="row col-12">
-                <h2 class="table-head-title" th:text="#{edit.user.password}"/>
+                <h2 class="table-head-title" th:text="#{settings.change.password.title}"/>
             </div>
-            <form th:object="${appUser}"
-                  th:action="@{'/admin/user/edit/'+ ${appUser.getId()}+'/changePassword'}" method="post">
+            <form th:object="${user}" th:action="@{/user/settings/changePassword/}"
+                  method="post">
+                <input th:field="*{id}" th:value="*{id}" name="modifiedId" hidden>
+                <div class="row offset-md-1 col-md-10">
+                    <div class="col-6">
+                        <label for="old-password" th:text="#{settings.old.password}"/>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control roundless" type="password" id="old-password" name="old-password"
+                               th:field="*{oldPassword}">
+                    </div>
+                </div>
                 <div class="row offset-md-1 col-md-10">
                     <div class="col-6">
                         <label for="password-field" th:text="#{settings.password}"/>
@@ -85,44 +112,19 @@
             </form>
         </div>
         <hr>
+        <hr>
         <div class="container window aligned-margines">
             <div class="row col-12">
-                <h2 class="table-head-title" th:text="#{edit.user.roles}"/>
+                <h2 class="table-head-title" th:text="#{settings.logs.title}"/>
             </div>
-            <form class="listing-container container" th:object="${userRole}"
-                  th:action="@{'/admin/user/edit/'+ ${appUser.getId()}+'/changeRoles'}" method="post">
-                <div class="row offset-md-1 col-md-10" id="roles">
-                    <div class="col-4">
-                        <label class="container-checkbox">
-                            <input type="checkbox" class="form-control" th:field="*{roles.role_shelter}"
-                                   th:value="*{roles.role_shelter_id}" th:text="#{roles.role_shelter_name}">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-
-                    <div class="col-4">
-                        <label class="container-checkbox">
-                            <input type="checkbox" class="form-control" th:field="*{roles.role_breeder}"
-                                   th:value="*{roles.role_breeder_id}" th:text="#{roles.role_breeder_name}">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-
-                    <div class="col-4">
-                        <label class="container-checkbox">
-                            <input type="checkbox" class="form-control" th:field="*{roles.role_admin}"
-                                   th:value="*{roles.role_admin_id}" th:text="#{roles.role_admin_name}">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
+            <div class="row" th:each=" event : ${currentUser.getApplicationEvents()}">
+                <div class="row offset-md-1 col-md-10 negative-event" th:if="${event.getEvent().contains('failed')}">
+                    <div class="offset-2" th:text="${event.getEvent()}"/>
                 </div>
-                <div class="row offset-md-1 col-md-10">
-                    <div class="offset-6 col-6">
-                        <input class="form-control button roundless" type="submit" th:value="#{settings.confirm}">
-                        <a class="button w-100" th:href="@{'/admin/user/list/'}" th:text="#{ctrl.previous}"></a>
-                    </div>
+                <div class="row offset-md-1 col-md-10 positive-event" th:if="${event.getEvent().contains('success')}">
+                    <div class="offset-2" th:text="${event.getEvent()}"/>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </main>

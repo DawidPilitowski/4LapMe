@@ -39,8 +39,8 @@ public class AppUser {
     @Column
     private byte[] avatar;
 
-    @ManyToMany
-    Set<Animal> animalList;
+    @OneToMany
+    List<Animal> animalList;
 
     @OneToMany
     private List<ApplicationEvent> applicationEvents;

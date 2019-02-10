@@ -177,7 +177,7 @@ public class UserController {
         return "redirect:/user/settings?message=" + "User password edited";
     }
 
-    @GetMapping("/allMyAnimals/{id}/")
+    @GetMapping("/allMyAnimals/{id}")
     public String animalList(Model model, @PathVariable(name = "id") Long id) {
         Optional<AppUser> optionalAppUser = userService.findById(id);
         AppUser appUser=optionalAppUser.get();
@@ -185,6 +185,6 @@ public class UserController {
             model.addAttribute("showAnimal",appUser.getAnimalList());
             return "user/allMyAnimals";
         }
-        return "user/err";
+        return "user/allMyAnimals";
     }
 }

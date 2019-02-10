@@ -31,8 +31,9 @@ public class Animal {
     @Column
     private byte[] image;
 
-    @ManyToMany
+    @ManyToOne
     private AppUser user;
-//    private List<Category> category;
+//    @OneToMany
+//    private Category category;
 
 }

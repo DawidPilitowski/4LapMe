@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 public class AnimalService {
-    @Value("${shop.default.approved}")
+    @Value("${animal.default.approved}")
     private Boolean defaultApproved;
 
     @Autowired

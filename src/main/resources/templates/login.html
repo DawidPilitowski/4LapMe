@@ -34,8 +34,13 @@
                 <input class="form-control button roundless" type="submit" th:value="#{login}">
             </div>
         </div>
-        <a th:href="@{register}" >Rejestracja</a>
+        <h1 class="table-head-title" th:text="#{dont.have.account}"/>
 
+        <div class="row offset-md-1 col-md-10">
+            <div class="offset-6 col-6">
+                <a class="form-control button roundless" th:href="@{/register}" th:text="#{register}"/>
+            </div>
+        </div>
     </form>
 </main>
 

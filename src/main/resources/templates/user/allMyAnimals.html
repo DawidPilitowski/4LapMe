@@ -12,6 +12,10 @@
             <div class="row col-12">
                 <h2 class="table-head-title" th:text="#{animal.list}"/>
             </div>
+            <div class="row col-12 colored aligned-margines redish" th:if="${showAnimal.size() == 0}">
+                <div class="col-12" th:text="#{no_elements}">
+                </div>
+            </div>
             <div class="row col-12 w-100" th:each="animal:${showAnimal}">
                 <div class="col-3 separate-left">
                     <div class="row details-colored">
