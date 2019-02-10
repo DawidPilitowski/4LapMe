@@ -35,7 +35,7 @@ public class AdminUserController {
         return "admin/user/list";
     }
 
-    @GetMapping("/add/")
+    @GetMapping("/add")
     public String getUser(Model model) {
         UserModifyDto dto = new UserModifyDto();
         dto.setRoles(userRoleService.getRoleToSelect());

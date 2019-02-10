@@ -63,7 +63,7 @@ public class InitialDataInitializer implements  ApplicationListener<ContextRefre
                     null,
                     new HashSet<>(rolesList),
                     null,
-                    new HashSet<>(),
+                    new ArrayList<>(),
                     new ArrayList<>()
                     ));
 

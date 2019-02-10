@@ -24,12 +24,12 @@ public class BasketController {
 
     @PostConstruct
     public void createDefaultAnimals() {
-        Animal e = new Animal("Kot Mirek");
-        Animal e1 = new Animal("Pies Anrzej");
-        Animal e2 = new Animal("Żaba Monika");
-        animalRepository.save(e);
-        animalRepository.save(e1);
-        animalRepository.save(e2);
+//        Animal e = new Animal(1,"Kot Mirek",null,null,null,null,null,null,null,null,null,null);
+//        Animal e1 = new Animal("Pies Anrzej");
+//        Animal e2 = new Animal("Żaba Monika");
+//        animalRepository.save(e);
+//        animalRepository.save(e1);
+//        animalRepository.save(e2);
     }
 
     @GetMapping(path = "/allAnimals")

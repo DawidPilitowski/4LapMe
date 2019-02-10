@@ -36,13 +36,10 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" th:href=" @{/order/list/}" th:text="#{orders}"/>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" th:href="@{/product/list/}" th:text="#{products}"/>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" th:href="@{/shop/list/}" th:text="#{shops}"/>
                 </li>
             </ul>
         </div>
@@ -71,24 +68,21 @@
                 </div>
             </div>
         </div>
+        <span id="result"></span>
         <div>
-            <div class="navbar-collapse collapse" id="navbarResponsiveLang">
+            <div class="navbar-collapse collapse" id="navbarResponsiveUser">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown pointer">
-                        <a class="nav-link dropdown-toggle" id="language-menu" data-toggle="dropdown" th:text="#{lang.current}"/>
-                        <ul id="locales" class="dropdown-menu">
-                            <li value="en" class="selected dropdown-item">
-                                <img th:src="@{/img/en.svg}" width="17px" /><span th:text="#{lang.en}"></span>
-                            </li>
-                            <li value="pl" class="selected dropdown-item">
-                                <img th:src="@{/img/pl.svg}" width="17px" /><span th:text="#{lang.pl}"></span>
-                            </li>
+                    <li class="nav-item dropdown pointer" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link dropdown-toggle" id="user-menu" data-toggle="dropdown" th:text="#{users}"/>
+
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:href="@{'/user/allMyAnimals/'+${loggedInUserDTO.getId()}}"
+                                   th:text="#{all.animals}"></a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
         </div>
-        <span id="result"></span>
         <div>
             <div class="navbar-collapse collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
@@ -101,6 +95,23 @@
                             <li><a class="dropdown-item" th:href="@{/admin/user/list}" th:text="#{users}"/></li>
                             <li><a class="dropdown-item" th:href="@{/admin/archived/archivedOrders}"
                                    th:text="#{archived.orders}"/></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <div class="navbar-collapse collapse" id="navbarResponsiveLang">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown pointer">
+                        <a class="nav-link dropdown-toggle" id="language-menu" data-toggle="dropdown" th:text="#{lang.current}"/>
+                        <ul id="locales" class="dropdown-menu">
+                            <li value="en" class="selected dropdown-item">
+                                <img th:src="@{/img/flags/en.svg}" width="17px" /><span th:text="#{lang.en}"></span>
+                            </li>
+                            <li value="pl" class="selected dropdown-item">
+                                <img th:src="@{/img/flags/pl.svg}" width="17px" /><span th:text="#{lang.pl}"></span>
+                            </li>
                         </ul>
                     </li>
                 </ul>

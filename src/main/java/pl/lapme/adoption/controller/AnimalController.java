@@ -1,5 +1,6 @@
 package pl.lapme.adoption.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +22,12 @@ import java.util.Optional;
 @Controller
 @RequestMapping(path = "/animal")
 public class AnimalController {
-
+    @Autowired
     private AnimalService animalService;
+    @Autowired
     private UserService userService;
+    @Autowired
     private CategoryService categoryService;
-
-    public AnimalController(AnimalService animalService, UserService userService, CategoryService categoryService) {
-        this.animalService = animalService;
-        this.userService = userService;
-        this.categoryService = categoryService;
-    }
 
     @GetMapping(path = "/show/all")
     public List<Animal> getAllAnimals() {
@@ -77,20 +74,18 @@ public class AnimalController {
     public String addAnimal(Model model, AddAnimalDTO animalDTO, @RequestParam("photo") MultipartFile photo) {
         model.addAttribute("newAnimal", new AddAnimalDTO());
         animalService.saveAnimal(animalDTO);
+        String name = photo.getName();
+        try {
+            byte[] bytes = photo.getBytes();
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(name + "-uploaded")));
+            stream.write(bytes);
+            stream.close();
+            animalDTO.setImage(bytes);
+        } catch (Exception e) {
+            System.out.println("File has not been added.");
+        }
+        animalService.saveAnimal(animalDTO);
         return "list";
-//        String name = photo.getName();
-//        try {
-//            byte[] bytes = photo.getBytes();
-//            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(name + "-uploaded")));
-//            stream.write(bytes);
-//            stream.close();
-//            animalDTO.setImage(bytes);
-//        } catch (Exception e) {
-//            System.out.println("File has not been added.");
-//        }
-//        System.out.println(animalDTO.getSellingLogin());
-//        animalService.saveAnimal(animalDTO);
-//        return "list";
     }
 
     @DeleteMapping(path = "/remove/{id}")
