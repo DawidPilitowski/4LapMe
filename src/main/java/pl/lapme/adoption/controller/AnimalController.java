@@ -62,33 +62,35 @@ public class AnimalController {
         return animalService.getAllByGender(gender);
     }
 
-//    @GetMapping(path = "/add")
-//    public String addAnimal(Model model, AddAnimalDTO animalDTO) {
-//        AddAnimalDTO animal = new AddAnimalDTO();
-//        System.out.println(userService.getLoggedInUser().getUsername());
-//        animal.setSellingLogin(userService.getLoggedInUser().getUsername());
-//        System.out.println(animal.getSellingLogin());
-//        List<Category> categories = categoryService.getAllList();
-//        model.addAttribute("animal", animalDTO);
-//        model.addAttribute("categories2", categories);
-//        return "add/form";
-//    }
+    @GetMapping(path = "/add")
+    public String addAnimal(Model model,
+                            @RequestParam(name = "error_message", required = false) String error_message,
+                            @RequestParam(name = "message", required = false) String message) {
+
+        model.addAttribute("addAnimal", new AddAnimalDTO());
+        model.addAttribute("animal", message);
+        model.addAttribute("animal", error_message);
+        return "add/form";
+    }
 
     @PostMapping(path = "/add")
-    public String addAnimal(AddAnimalDTO animalDTO, @RequestParam("photo") MultipartFile photo) {
-        String name = photo.getName();
-        try {
-            byte[] bytes = photo.getBytes();
-            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(name + "-uploaded")));
-            stream.write(bytes);
-            stream.close();
-            animalDTO.setImage(bytes);
-        } catch (Exception e) {
-            System.out.println("File has not been added.");
-        }
-        System.out.println(animalDTO.getSellingLogin());
+    public String addAnimal(Model model, AddAnimalDTO animalDTO, @RequestParam("photo") MultipartFile photo) {
+        model.addAttribute("newAnimal", new AddAnimalDTO());
         animalService.saveAnimal(animalDTO);
         return "list";
+//        String name = photo.getName();
+//        try {
+//            byte[] bytes = photo.getBytes();
+//            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(name + "-uploaded")));
+//            stream.write(bytes);
+//            stream.close();
+//            animalDTO.setImage(bytes);
+//        } catch (Exception e) {
+//            System.out.println("File has not been added.");
+//        }
+//        System.out.println(animalDTO.getSellingLogin());
+//        animalService.saveAnimal(animalDTO);
+//        return "list";
     }
 
     @DeleteMapping(path = "/remove/{id}")

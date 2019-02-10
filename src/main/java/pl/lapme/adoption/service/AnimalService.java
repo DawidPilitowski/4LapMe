@@ -1,5 +1,7 @@
 package pl.lapme.adoption.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.lapme.adoption.model.Animal;
 import pl.lapme.adoption.model.dto.AddAnimalDTO;
@@ -10,12 +12,14 @@ import java.util.Optional;
 
 @Service
 public class AnimalService {
+    @Value("${shop.default.approved}")
+    private Boolean defaultApproved;
 
+    @Autowired
     private AnimalRepository animalRepository;
+    @Autowired
+    private LoginService loginService;
 
-    public AnimalService(AnimalRepository animalRepository) {
-        this.animalRepository = animalRepository;
-    }
 
     public List<Animal> getAllAnimmals() {
         return animalRepository.findAll();
@@ -40,16 +44,25 @@ public class AnimalService {
     public List<Animal> getAllByGender(String gender) {
         return animalRepository.findAllByGender(gender);
     }
+
     public Optional<Animal> findById(Long id) {
         return animalRepository.findById(id);
     }
 
     public boolean saveAnimal(AddAnimalDTO animalDTO) {
-        Optional<Animal> newAnimal = animalRepository.findById(animalDTO.getId());
-        if (newAnimal.isPresent()) {
-            return false;
+        Animal animal = new Animal();
+        if (loginService.isAdmin()) {
+            animal.setAwaitingApproval(defaultApproved);
+        } else {
+            animal.setAwaitingApproval(!defaultApproved);
         }
-        Animal animal = new Animal(animalDTO.getName());
+        animal.setName(animalDTO.getName().trim());
+        animal.setAge(animalDTO.getAge());
+        animal.setDescription(animalDTO.getDescription());
+        animal.setGender(animalDTO.getGender().trim());
+        animal.setRace(animalDTO.getRace().trim());
+        animal.setType(animalDTO.getType().trim());
+        animal.setUser(loginService.getLoggedInUser().get());
         animalRepository.save(animal);
         return true;
     }

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import pl.lapme.adoption.model.Animal;
 import pl.lapme.adoption.model.AppUser;
 import pl.lapme.adoption.model.dto.ChangeAppUserSettingsDto;
 import pl.lapme.adoption.model.dto.RegisterUserDTO;
@@ -55,7 +56,6 @@ public class UserController {
 //    }
 
 
-
 //    @GetMapping("/activation")
 //    public String activateUser(@RequestParam(name = "code") String code) {
 //        Optional<AppUser> userOptional = userService.findByPassword(code);
@@ -72,7 +72,7 @@ public class UserController {
 
         String userLogin = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<AppUser> optionalUserByLogin = userService.findByUsername(userLogin);
-        AppUser userByLogin=optionalUserByLogin.get();
+        AppUser userByLogin = optionalUserByLogin.get();
         if (userByLogin != null) {
             model.addAttribute("profile", userByLogin);
 
@@ -123,8 +123,8 @@ public class UserController {
 
     @GetMapping("/settings")
     public String userSettings(Model model, ChangeAppUserSettingsDto user,
-                                   @RequestParam(name = "message", required = false) String message,
-                                   @RequestParam(name = "error_message", required = false) String error_message) {
+                               @RequestParam(name = "message", required = false) String message,
+                               @RequestParam(name = "error_message", required = false) String error_message) {
         Long id = loginService.getLoggedInUser().get().getId();
         Optional<AppUser> optionalAppUser = userService.getUserById(id);
 
@@ -148,8 +148,8 @@ public class UserController {
 
     @GetMapping("/settings/changePassword")
     public String userPasswordSettings(Model model, ChangeAppUserSettingsDto user,
-                                           @RequestParam(name = "message", required = false) String message,
-                                           @RequestParam(name = "error_message", required = false) String error_message) {
+                                       @RequestParam(name = "message", required = false) String message,
+                                       @RequestParam(name = "error_message", required = false) String error_message) {
         Long id = loginService.getLoggedInUser().get().getId();
         Optional<AppUser> optionalAppUser = userService.getUserById(id);
 
@@ -175,5 +175,16 @@ public class UserController {
         }
         userService.changePasswordSettings(changeAppUserSettingsDto, getCurrentUser());
         return "redirect:/user/settings?message=" + "User password edited";
+    }
+
+    @GetMapping("/allMyAnimals/{id}/")
+    public String animalList(Model model, @PathVariable(name = "id") Long id) {
+        Optional<AppUser> optionalAppUser = userService.findById(id);
+        AppUser appUser=optionalAppUser.get();
+        if (optionalAppUser.isPresent()) {
+            model.addAttribute("showAnimal",appUser.getAnimalList());
+            return "user/allMyAnimals";
+        }
+        return "user/err";
     }
 }

@@ -3,6 +3,8 @@ package pl.lapme.adoption.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.lapme.adoption.model.AppUser;
+import pl.lapme.adoption.model.Category;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +19,7 @@ public class AddAnimalDTO {
     private String gender;
     private String description;
 
-    private String sellingLogin;
-
+    private Category category;
+    private AppUser userName;
     private byte[] image;
 }

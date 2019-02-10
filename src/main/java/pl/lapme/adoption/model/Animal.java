@@ -1,14 +1,17 @@
 package pl.lapme.adoption.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Animal {
 
     @Id
@@ -21,6 +24,7 @@ public class Animal {
     private String gender;
     private String description;
 
+    private boolean awaitingApproval;
     private String sellingLogin;
 
     @Lob
@@ -28,9 +32,7 @@ public class Animal {
     private byte[] image;
 
     @ManyToMany
-    Set<AppUser> user;
+    private AppUser user;
+//    private List<Category> category;
 
-    public Animal(String name) {
-        this.name = name;
-    }
 }
