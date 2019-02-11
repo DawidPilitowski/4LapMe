@@ -7,23 +7,37 @@
 <body>
 <header th:replace="template :: navigator"></header>
 
-<main role="main" class="container">
-    <!--<div th:if="${!dbStatus}">-->
-        <!--<div class="container aligned-margines">-->
-            <!--<div class="row container window aligned-margines">-->
-                <!--<p class="lead" th:text="#{index.db.warning}"></p>-->
-                <!--<p class="lead" th:text="#{index.db.confluence}"></p>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <h1 class="mt-5" th:text="#{index.headertext}"/>
-    <p class="lead" th:text="#{index.paragraph.text}"></p>
-    <p class="lead" th:text="#{index.paragraph.text1}"></p>
-    <p class="lead" th:text="#{index.paragraph.text2}"></p>
-    <p class="lead" th:text="#{index.paragraph.text3}"></p>
+<main role="main" class="page-content d-flex align-items-stretch">
 
-    <a th:href="'mailto:' + #{index.admin.mail1}">
-        <p th:text="#{index.admin.mail1}"></p></a>
+    <nav th:replace="fragments::sidebar">
+    </nav>
+    <div class="content-inner">
+        <header th:replace="fragments::secondary-header">
+        </header>
+        <div class="breadcrumb-holder container-fluid">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item active">Inne</li>
+            </ul>
+        </div>
+        <section class="dashboard-counts no-padding-bottom"><!--<div th:if="${!dbStatus}">-->
+            <!--<div class="container aligned-margines">-->
+            <!--<div class="row container window aligned-margines">-->
+            <!--<p class="lead" th:text="#{index.db.warning}"></p>-->
+            <!--<p class="lead" th:text="#{index.db.confluence}"></p>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <h1 class="mt-5" th:text="#{index.headertext}"/>
+            <p class="lead" th:text="#{index.paragraph.text}"></p>
+            <p class="lead" th:text="#{index.paragraph.text1}"></p>
+            <p class="lead" th:text="#{index.paragraph.text2}"></p>
+            <p class="lead" th:text="#{index.paragraph.text3}"></p>
+
+            <a th:href="'mailto:' + #{index.admin.mail1}">
+                <p th:text="#{index.admin.mail1}"></p></a>
+        </section>
+    </div>
 </main>
 
 <footer th:replace="template :: foot">

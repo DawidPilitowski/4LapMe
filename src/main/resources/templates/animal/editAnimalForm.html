@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template:: head">
+    <meta charset="UTF-8">
+    <title th:text="#{animal.edit.title}"/>
+</head>
+<body>
+<header th:replace="template :: navigator"></header>
+
+<main role="main" class="container">
+    <div class="container aligned-margines">
+        <div class="row container window aligned-margines">
+            <form class="container col-md-12" th:object="${editAnimal}" th:action="@{'/shop/edit/'+ ${editAnimal.getId()}}" method="post" >
+                <input th:field="*{id}" th:value="*{id}" name="modifiedId" hidden>
+                <div class="row">
+                    <h3 class="table-head-title" th:text="#{animal.edit}"/>
+                </div>
+                <div class="row">
+                    <div class="offset-md-1 col-md-5 middled">
+                        <label for="animal-name" th:text="#{animal.name}"/>
+                    </div>
+                    <div class="col-md-5 middled">
+                        <input required class="form-control roundless" type="text" id="animal-name" th:field="*{name}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-1 col-md-5 middled">
+                        <label for="animal-type" th:text="#{animal.type}"/>
+                    </div>
+                    <div class="col-md-5 middled">
+                        <input class="form-control roundless" type="text" id="animal-type" th:field="*{type}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-1 col-md-5 middled">
+                        <label for="animal-race" th:text="#{animal.race}"/>
+                    </div>
+                    <div class="col-md-5 middled">
+                        <input required class="form-control roundless" type="text" id="animal-race" th:field="*{race}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-1 col-md-5 middled">
+                        <label for="animal-age" th:text="#{animal.age}"/>
+                    </div>
+                    <div class="col-md-5 middled">
+                        <input required class="form-control roundless" type="text" id="animal-age"
+                               th:field="*{age}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-1 col-md-5 middled">
+                        <label for="addressCode" th:text="#{animal.gender}"/>
+                    </div>
+                    <div class="col-md-5 middled">
+                        <input required class="form-control roundless" type="text" id="addressCode"
+                               th:field="*{gender}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-1 col-md-5 middled">
+                        <label for="addressCity" th:text="#{animal.description}"/>
+                    </div>
+                    <div class="col-md-5 middled">
+                        <input required class="form-control roundless" type="text" id="addressCity"
+                               th:field="*{description}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-10 col-2 paddingless">
+                        <input class="form-control roundless button" type="submit" th:value="#{add.animal}"/>
+                        <a class="button w-100" th:href="@{'/'}" th:text="#{ctrl.back.to.home.page}"></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="template :: foot">
+</footer>
+<div th:replace="template :: scripts">
+</div>
+</body>
+</html>

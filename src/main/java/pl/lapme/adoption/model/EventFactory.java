@@ -12,4 +12,8 @@ public final class EventFactory {
     public static ApplicationEvent loginFailed(String username, String password, String address) {
         return ApplicationEvent.builder().event("Login failed. IP: " + address).msg("User: " + username + " used password: " + password).eventType(EventType.LOGIN).build();
     }
+    public static ApplicationEvent eventMessage(String message, String user) {
+        return ApplicationEvent.builder().event(message).msg("User: " + user).build();
+    }
+
 }

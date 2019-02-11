@@ -7,6 +7,7 @@ import pl.lapme.adoption.model.Category;
 import pl.lapme.adoption.service.CategoryService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CategoryController {
@@ -19,7 +20,7 @@ public class CategoryController {
 
     @GetMapping(path = "/categoryList")
     public String list(Model model){
-        List<Category> categoryList = categoryService.getAllList();
+        List<Category> categoryList = categoryService.findAll();
         model.addAttribute("categoryList", categoryList);
         return "categoryList";
     }
