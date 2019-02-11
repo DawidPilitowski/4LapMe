@@ -77,4 +77,8 @@ public class CategoryService {
 
         return categoryFromDatabase;
     }
+
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
+    }
 }

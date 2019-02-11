@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template:: head">
+    <meta charset="UTF-8">
+    <title th:text="#{index.title}"/>
+</head>
+<body>
+<header th:replace="template :: navigator"></header>
+
+<main role="main" class="container">
+    <div class="page-content d-flex align-items-stretch">
+        <nav th:replace="fragments::sidebar">
+        </nav>
+    </nav>
+    </div><!--<div th:if="${!dbStatus}">-->
+        <!--<div class="container aligned-margines">-->
+            <!--<div class="row container window aligned-margines">-->
+                <!--<p class="lead" th:text="#{index.db.warning}"></p>-->
+                <!--<p class="lead" th:text="#{index.db.confluence}"></p>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <h1 class="mt-5" th:text="#{index.headertext}"/>
+    <p class="lead" th:text="#{index.paragraph.text}"></p>
+    <p class="lead" th:text="#{index.paragraph.text1}"></p>
+    <p class="lead" th:text="#{index.paragraph.text2}"></p>
+    <p class="lead" th:text="#{index.paragraph.text3}"></p>
+
+    <a th:href="'mailto:' + #{index.admin.mail1}">
+        <p th:text="#{index.admin.mail1}"></p></a>
+</main>
+
+<footer th:replace="template :: foot">
+</footer>
+<div th:replace="template :: scripts">
+</div>
+</body>
+</html>
